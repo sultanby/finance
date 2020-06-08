@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form id="registration" action="/register" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" id="username" placeholder="Username" type="text">
+        </div>
+        <div class="alert alert-warning collapse" id="usernameCollapse" role="alert">
+              Username has been already taken
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="alert alert-danger collapse" role="alert">
+              Username has been already taken
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Password (again)" type="password">
+        </div>
+        <button class="btn btn-primary" id="submit" type="submit">Register</button>
+    </form>
+    <script>
+        let username = document.getElementById('username');
+        username.onkeyup = function() {
+            $.get('/check?username=' + username.value, function(data) {
+                if(data){
+                     $("#usernameCollapse").collapse().hide();
+                     $(':button[type="submit"]').prop('disabled', false);
+                }else{
+                     $("#usernameCollapse").collapse().show();
+                     $(':button[type="submit"]').prop('disabled', true);
+                }
+            });
+        };
+    </script>
+{% endblock %}
+
